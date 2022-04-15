@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_info"
+        android:title="About Us" />
+
+    <item
+        android:id="@+id/nav_camera_hack_info"
+        android:icon="@drawable/ic_camera"
+        android:title="Camera Hack Info" />
+
+    <item
+        android:id="@+id/nav_hack_risks"
+        android:icon="@drawable/ic_privacy_tip"
+        android:title="Hack Risks" />
+</menu>
