@@ -54,6 +54,7 @@
                 android:src="@drawable/ic_person" />
 
             <EditText
+                android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -78,6 +79,7 @@
                 android:src="@drawable/ic_mail" />
 
             <EditText
+                android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -87,6 +89,8 @@
                 android:textColor="@color/black"
                 android:textSize="7pt"
                 android:textStyle="bold"
+                android:inputType="none"
+                android:enabled="false"
                 tools:ignore="TouchTargetSizeCheck" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -102,6 +106,7 @@
                 android:src="@drawable/ic_phone" />
 
             <EditText
+                android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

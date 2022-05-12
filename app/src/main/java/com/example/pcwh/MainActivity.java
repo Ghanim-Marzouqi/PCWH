@@ -3,6 +3,7 @@ package com.example.pcwh;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,8 +18,11 @@ import androidx.fragment.app.FragmentManager;
 import com.example.pcwh.fragments.AboutUsFragment;
 import com.example.pcwh.fragments.CameraHackInfoFragment;
 import com.example.pcwh.fragments.HackRisksFragment;
+import com.example.pcwh.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -27,8 +31,6 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     // customer name and email
-    String name = "", email = "", image = "";
-
     TextView drawer_user_name;
     TextView drawer_user_email;
     ImageView drawer_user_image;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
     FragmentManager manager;
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("About Us");
         }
 
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance();
+
         // drawer
         drawer = findViewById(R.id.drawer_layout);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -58,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         // drawer header
         View headerView = navigationView.getHeaderView(0);
         drawer_user_name = headerView.findViewById(R.id.drawer_user_name);
-        drawer_user_email= headerView.findViewById(R.id.drawer_user_email);
+        drawer_user_email = headerView.findViewById(R.id.drawer_user_email);
         drawer_user_image = headerView.findViewById(R.id.iv_profile);
         navigationView.setNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -90,35 +97,37 @@ public class MainActivity extends AppCompatActivity {
         // set first selection tab
         manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragment, new AboutUsFragment()).commit();
+    }
 
+    @Override
+    protected void onStart() {
         // check for shared preferences
         SharedPreferences sp = getSharedPreferences("USER", MODE_PRIVATE);
         String data = sp.getString("user", "");
 
         // check of there is any available data
         if(!data.equals("")) {
-            try {
-                JSONObject jsonObject = new JSONObject(data);
+            User user = new Gson().fromJson(data, User.class);
 
-                // get user name
-                name = jsonObject.getString("name");
-                email = jsonObject.getString("email");
-                image = jsonObject.getString("image");
+            String name = user.getName();
+            String email = user.getEmail();
+            String imageUrl = user.getImageUrl();
 
-                // set Drawer views
-                drawer_user_name.setText(name);
-                drawer_user_email.setText(email);
-                Picasso.with(this)
-                        .load(image)
+            // set Drawer views
+            drawer_user_name.setText(name);
+            drawer_user_email.setText(email);
+
+            if (!imageUrl.isEmpty()) {
+                Picasso.with(MainActivity.this)
+                        .load(imageUrl)
                         .resize(96, 96)
                         .centerCrop()
                         .placeholder(R.drawable.person_placeholder)
                         .into(drawer_user_image);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
+
+        super.onStart();
     }
 
     @Override
@@ -153,9 +162,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(id == R.id.logout) {
+            // Sign Out user
+            auth.signOut();
+
             // clear Shared Preferences
             SharedPreferences sp = getSharedPreferences("USER", MODE_PRIVATE);
-            sp.edit().clear().apply();
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("user", "");
+            editor.apply();
             finish();
         }
 
