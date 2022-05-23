@@ -65,7 +65,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = auth.getCurrentUser();
 
-                    // Add user to Firebase Cloud Firestore
+                    // Add user to Firebase Cloud Firestore (Database)
                     Map<String, Object> userRecord = new HashMap<>();
                     userRecord.put("id", user.getUid());
                     userRecord.put("name", name);

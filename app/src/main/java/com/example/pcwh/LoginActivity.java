@@ -76,14 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 // Instantiate logged in user
                                 user = document.toObject(User.class);
-                                String data = new Gson().toJson(user);
-
-                                // store data into a Shared Preferences
-                                SharedPreferences sp = getSharedPreferences("USER", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("user", data);
 
                                 // Store user credentials if checkbox checked
+                                SharedPreferences sp = getSharedPreferences("USER", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+
                                 if (cbRememberMe.isChecked()) {
                                     UserCredentials userCredentials = new UserCredentials(email, password, cbRememberMe.isChecked());
                                     String credentials = new Gson().toJson(userCredentials);
@@ -91,11 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     editor.putString("credentials", "");
                                 }
-
-                                // Apply changes
                                 editor.apply();
                             } else {
-                                Toast.makeText(LoginActivity.this, "User doesn't exist", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "User doesn't exist", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Toast.makeText(LoginActivity.this, "Cannot get user data", Toast.LENGTH_SHORT).show();

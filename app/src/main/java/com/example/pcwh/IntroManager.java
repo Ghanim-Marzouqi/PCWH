@@ -11,7 +11,7 @@ public class IntroManager {
     public IntroManager(Context context)
     {
         this.context=context;
-        pref=context.getSharedPreferences("first",0);
+        pref = context.getSharedPreferences("first",0);
         editor = pref.edit();
     }
     public void setFirst(boolean isFirst)

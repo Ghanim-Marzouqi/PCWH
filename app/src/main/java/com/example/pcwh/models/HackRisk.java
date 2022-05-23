@@ -1,5 +1,7 @@
 package com.example.pcwh.models;
 
+import androidx.annotation.NonNull;
+
 public class HackRisk {
 
     // Properties
@@ -50,5 +52,11 @@ public class HackRisk {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return source;
     }
 }
