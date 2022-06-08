@@ -1,12 +1,10 @@
 package com.example.pcwh.models;
 
-import androidx.annotation.NonNull;
-
 public class HackRisk {
 
     // Properties
-    private String id;
-    private String source;
+    private String ip;
+    private String location;
     private String date;
     private String time;
 
@@ -14,28 +12,27 @@ public class HackRisk {
     public HackRisk() {
     }
 
-    public HackRisk(String id, String source, String date, String time) {
-        this.id = id;
-        this.source = source;
+    public HackRisk(String ip, String location, String date, String time) {
+        this.ip = ip;
+        this.location = location;
         this.date = date;
         this.time = time;
     }
 
-    // Getters & Setters
-    public String getId() {
-        return id;
+    public String getIp() {
+        return ip;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
-    public String getSource() {
-        return source;
+    public String getLocation() {
+        return location;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getDate() {
@@ -54,9 +51,11 @@ public class HackRisk {
         this.time = time;
     }
 
-    @NonNull
     @Override
     public String toString() {
-        return source;
+        return  "IP: " + ip + "\n" +
+                "Location: " + location + "\n" +
+                "Date: " + date + "\n" +
+                "Time: " + time;
     }
 }
